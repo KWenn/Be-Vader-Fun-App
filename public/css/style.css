@@ -1,0 +1,17 @@
+body{
+	background:#000 !important;
+	color:#fff !important;
+}
+
+h1{
+	text-align:center;
+}
+
+.btn{
+	margin:20px;
+}
+
+.center{
+	text-align:center;
+	margin:0 auto;
+}
