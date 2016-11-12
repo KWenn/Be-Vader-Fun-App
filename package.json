@@ -1,20 +1,25 @@
 {
-  "name": "bedarth",
+  "name": "bevader",
   "version": "1.0.0",
   "description": "Be Darth Vader",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Karl Wenn",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.5.8",
     "audio-player": "^1.1.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "livecam": "^0.2.0",
+    "node-sass": "^3.10.1",
     "play-sound": "0.0.9"
-    "jsmpeg": "git+https://github.com/phoboslab/jsmpeg.git"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1"
   }
 }

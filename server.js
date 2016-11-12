@@ -18,10 +18,10 @@ app.get('/', function(req, res){
 app.post('/', function(req, res) {
 	var URLS = req.body;
 	var url = URLS["url"];
-	player.play( __dirname + '/public/assets' + url, function(err){if (err) throw err});
+	console.log(url);
+	player.play( __dirname + '/public/assets/soundclips/' + url + '.mp3', function(err){if (err) throw err});
     res.status(200).send((url).toString());
 });
-
 
 app.listen(3000, function () {
   console.log('Vader  listening on port 3000!');

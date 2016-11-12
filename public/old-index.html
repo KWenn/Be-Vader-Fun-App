@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+	<link rel="stylesheet" href="/css/app.css"> 
+	  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <center><img src="assets/img/imgres.jpg"></center>
+    <title>Be Vader</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript">
+	function send(clip){		
+		var sound = {
+		    url: clip
+			};
+			
+			$.ajax({
+			    type: "POST",
+			    data: JSON.stringify(sound),
+			    url: "http://localhost:3000",
+			    contentType: "application/json"
+			}).done(function(res) {       
+			    console.log(res);
+			    // Do something with the result :)
+			});
+/*
+			var params = "url=" + clip;
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("POST", "http://localhost:3000", true);
+		  	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		  	xhttp.onreadystatechange = function() {
+		    	if(xhttp.readyState == 4 && xhttp.status == 200) {
+		        	alert(xhttp.responseText);
+		    	}
+		    }
+		    console.log(params)
+			xhttp.send(params);
+*/
+	}
+		
+		
+			
+    function playSound(el,soundfile) {  
+       /* 
+        if (el.mp3) {
+            if(el.mp3.paused) el.mp3.play();
+            else el.mp3.pause();
+        } else {
+            el.mp3 = new Audio(soundfile);
+                        ://lostechies.com/derickbailey/2014/03/13/build-a-local-webcam-with-webrtc-in-less-than-20-lines/label class="control-label" for="profile_email" style="margin-top:0!important;">Email</label>
+                    </div>
+            el.mp3.play();
+        }
+        */ 
+        send(soundfile);
+    }      
+
+</script>
+<!--<script src="/js/webcam.js"></script>-->
+</head>
+<body ng-app="vader" ng-controller="soundclips">
+<header></header>
+<div class="container">
+    <input type="text" ng-model="test">
+    <ul>
+        <li ng-repeat="clip in clips">
+            {{ clip }}
+        </li>
+    </ul>
+
+
+	 	<h1>Be Vader</h1>
+	 	<div class="container">
+		 	<div class="row">
+			 	<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Apology</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Asyouwish.mp3');">As you wish</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Bidding.mp3');">Bidding</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/breath.mp3');">Breathing</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Dontfailmeagain.mp3');">Don't Fail me again</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Everypartoftheship.mp3');">Every part of the ship</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Force.mp3');">Force is with you</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Heishere.mp3');">He is here</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Ihaveyounow.mp3');">I have you now</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Iamyourfather.mp3');">I am your father</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+				<button type="button" class="btn btn-primary btn-lg" onclick="playSound(this, '/soundclips/Apology.mp3');">Large button</button>
+
+		 	</div>
+	 	</div>
+      <video id="player" autoplay="false"></video>
+    </div>
+ <footer>
+	
+ </footer>
+<script type="http://127.0.0.1:3000/js/app.js"></script>
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+
+</html>
