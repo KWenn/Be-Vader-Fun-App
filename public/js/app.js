@@ -5,7 +5,7 @@ var app = angular.module('vader',[]);
 app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 	
 	$scope.vaderClips   = '';
-	$scope.sortType     = 'name'; // set the default sort type
+	$scope.sortType     = 'popularity'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
 	
   	$scope.words = [
@@ -23,8 +23,9 @@ app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 	
 	$scope.playSound = function(el){
 		var sound = {
-			url: el.clips
+			url: el.clip.title
 		};
+				
 		$http({
 	      method  : 'POST',
 	      url     : 'http://localhost:3000',
