@@ -1,12 +1,13 @@
 body{
     background-color:#000;
+    background-image: url('/assets/img/space.png');
 }
 
 
 thead{
-	background:#fff;
+	background:#0a1740;
 }
 
 .table-striped>tbody>tr:nth-of-type(odd){
-	background:grey;
+	background:transparent;
 }

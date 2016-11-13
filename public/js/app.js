@@ -36,6 +36,15 @@ app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 	];
 	
 	
+	$scope.facebooklogin = function(){
+		console.log("facebook login");
+	}
+	
+	$scope.twitterlogin = function(){
+		console.log("twitter login");
+	}
+	
+	
   	$scope.words = [
 		{title: 'Apology', contains: "put in full text here", popularity: 5},
 		{title: 'Asyouwish', contains: "text", popularity: 2},

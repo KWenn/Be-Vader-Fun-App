@@ -20,7 +20,13 @@ app.post('/login',
   function(req, res) {
     // If this function gets called, authentication was successful.
     // `req.user` contains the authenticated user.
+    console.log("successfully logged in");
     res.redirect('/dashboard/' + req.user.username);
+});
+
+
+app.get('/register', function(req, res){
+		res.sendFile(path.join(__dirname + '/public/register.html'));
 });
 
 app.get('/', function(req, res){
