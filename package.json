@@ -10,13 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.2",
     "audio-player": "^1.1.0",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "livecam": "^0.2.0",
     "node-sass": "^3.10.1",
-    "play-sound": "0.0.9"
+    "passport": "^0.3.2",
+    "play-sound": "0.0.9",
+    "socket.io": "^1.5.1"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

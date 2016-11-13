@@ -1,12 +1,40 @@
 'use strict';
 
-var app = angular.module('vader',[]);
+var app = angular.module('vader',['ui.router']);
+
+
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    
+    $urlRouterProvider.otherwise('/main');
+    
+    $stateProvider
+        
+        .state('dashboard', {
+            url: '/main',
+            templateUrl: './views/partial-dashboard.html',
+            controller: 'VaderSpeaks'
+        })
+        
+        //$locationProvider.html5Mode(true);      
+});
+
 
 app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 	
 	$scope.vaderClips   = '';
 	$scope.sortType     = 'popularity'; // set the default sort type
 	$scope.sortReverse  = false;  // set the default sort order
+	
+	$scope.cue = [
+		'username1',
+		'username2',
+		'username3',
+		'username4',
+		'username5',
+		'username6',
+		'username7'
+	];
+	
 	
   	$scope.words = [
 		{title: 'Apology', contains: "put in full text here", popularity: 5},

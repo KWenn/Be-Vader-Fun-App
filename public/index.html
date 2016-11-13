@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
       <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 	<link rel="stylesheet" href="/css/app.css"> 
 	  
@@ -10,61 +11,134 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <center><img src="assets/img/imgres.jpg"></center>
     <title>Be Vader</title>
     
     <script src="/bower_components/angular/angular.js"></script>
 	</head>
 	<body class="container" ng-app="vader">
-	 	<h1>Be Vader</h1>
-	 	<div class="container" ng-controller="VaderSpeaks" >
+		
+<body>
+
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+    	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        	<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="#"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+     
+    	<ul class="nav navbar-nav navbar-right">
+        	<li><p class="navbar-text">Already have an account?</p></li>
+			<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+			<ul id="login-dp" class="dropdown-menu">
+				<li>
+					 <div class="row">
+							<div class="col-md-12">
+								Login via
+								<div class="social-buttons">
+									<a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+									<a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+								</div>
+                                or
+								 <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputEmail2">Email address</label>
+											 <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+										</div>
+										<div class="form-group">
+											 <label class="sr-only" for="exampleInputPassword2">Password</label>
+											 <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
+                                             <div class="help-block text-right"><a href="">Forget the password ?</a></div>
+										</div>
+										<div class="form-group">
+											 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+										</div>
+										<div class="checkbox">
+											 <label>
+											 <input type="checkbox"> keep me logged-in
+											 </label>
+										</div>
+								 </form>
+							</div>
+							<div class="bottom text-center">
+								New here ? <a href="#"><b>Join Us</b></a>
+							</div>
+					 </div>
+				</li>
+			</ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<header>
+	<center>
+	<img src="assets/img/imgres.jpg">
+	<h1>Be Vader</h1>
+	</center>
+	
+</header>
+	 	<div class="container" ng-controller='VaderSpeaks' >
 		 	<div class="row">
-			 	<form>
-				    <div class="form-group">
-				    	<div class="input-group">
-				        	<div class="input-group-addon"><i class="fa fa-search"></i></div>
-							<input type="text" class="form-control" placeholder="Search Vader Sound Clips" ng-model="vaderClips">
-				    	</div>      
-					</div>
-				</form>
-				<table class="table table-bordered table-striped">
-					<thead>
-					    <tr>
-					        <td>
-					          	<a href="#" ng-click="sortType = 'title'; sortReverse = !sortReverse">
-					            	Clip Title 
-									<span ng-show="sortType == 'title' && !sortReverse" class="fa fa-caret-down"></span>
-									<span ng-show="sortType == 'title' && sortReverse" class="fa fa-caret-up"></span>
-					          	</a>
-					        </td>
-							<td>
-					        	<a href="#" ng-click="sortType = 'contains'; sortReverse = !sortReverse">
-									Contains Following Text 
-						            <span ng-show="sortType == 'contains' && !sortReverse" class="fa fa-caret-down"></span>
-						            <span ng-show="sortType == 'contains' && sortReverse" class="fa fa-caret-up"></span>
-					          	</a>
-					        </td>
-					        <td>
-					        	<a href="#" ng-click="sortType = 'popularity'; sortReverse = !sortReverse">
-									Popularity (1 - 5); 
-						            <span ng-show="sortType == 'popularity' && !sortReverse" class="fa fa-caret-down"></span>
-						            <span ng-show="sortType == 'popularity' && sortReverse" class="fa fa-caret-up"></span>
-								</a>
-					        </td>
-					    </tr>
-					</thead>
-    
-				    <tbody>
-				    	<tr ng-repeat="clip in words | orderBy:sortType:sortReverse | filter:vaderClips">
-					  	<td><button type="button" class="btn btn-primary btn-lg" ng-click="playSound(this);">{{ clip.title }}</button></td>
-				        <td>{{ clip.contains }}</td>
-				        <td>{{ clip.popularity }}</td>
-				      </tr>
-				    </tbody>
-  				</table>
- 			</div>
+				<div class="col-md-2">
+					the cue <br /> (Sessions last 3 minutes)
+					<ul>
+					<li ng-repeat="user in cue">{{ user }}</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<center><video id="player" autoplay="false" width="100%"></video></center>
+				</div>
+				<div class="col-md-4">
+					<div class='row'>
+						<div>
+						You are known as: <span ng-bind="nickName"></span>.
+						<br/>
+						Change your nickname with <code>/nick [yourNewNick]</code>
+						<div class='row'>
+						<div class='col-md-9'>
+						<textarea style='width: 100%; height: 200px' ng-disable='true' ng-model='messageLog'></textarea>
+      				</div>
+    			</div>
+				<div class='row'>
+					&nbsp;
+    			</div>
+				<div class='row'>
+				<div class='col-md-8'>
+				<form role='form' novalidate name='form'>
+					<div class='form-group'>
+						<input type='text' style='width: 80%' required ng-max='50' ng-model='message' focus>
+						<button class='btn btn-sm btn-primary' ng-enable='form.$valid' ng-click="sendMessage(message)">Send!</button>
+        			</div>
+        		</form>
+      		</div>
+	  	</div>
+	</div>
+</div>
+				</div>
+			</div>
+ 		</div>
 		<footer>
-			<script src="/js/app.js"></script>
+			<center>Copyright 2016 Karl Wenn</center>
 		</footer>
+			<script src="/js/app.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+			<script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+			<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+			<!--<script src="/js/webcam.js"></script>-->
+
+ 
+
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
  	</body>
 </html>

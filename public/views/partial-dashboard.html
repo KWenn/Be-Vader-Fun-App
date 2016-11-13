@@ -1,0 +1,43 @@
+			 	<form>
+				    <div class="form-group">
+				    	<div class="input-group">
+				        	<div class="input-group-addon"><i class="fa fa-search"></i></div>
+							<input type="text" class="form-control" placeholder="Search Vader Sound Clips" ng-model="vaderClips">
+				    	</div>      
+					</div>
+				</form>
+				<table class="table table-bordered table-striped">
+					<thead>
+					    <tr>
+					        <td>
+					          	<a href="#" ng-click="sortType = 'title'; sortReverse = !sortReverse">
+					            	Clip Title 
+									<span ng-show="sortType == 'title' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'title' && sortReverse" class="fa fa-caret-up"></span>
+					          	</a>
+					        </td>
+							<td>
+					        	<a href="#" ng-click="sortType = 'contains'; sortReverse = !sortReverse">
+									Contains Following Text 
+						            <span ng-show="sortType == 'contains' && !sortReverse" class="fa fa-caret-down"></span>
+						            <span ng-show="sortType == 'contains' && sortReverse" class="fa fa-caret-up"></span>
+					          	</a>
+					        </td>
+					        <td>
+					        	<a href="#" ng-click="sortType = 'popularity'; sortReverse = !sortReverse">
+									Popularity (1 - 5); 
+						            <span ng-show="sortType == 'popularity' && !sortReverse" class="fa fa-caret-down"></span>
+						            <span ng-show="sortType == 'popularity' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					    </tr>
+					</thead>
+    
+				    <tbody>
+				    	<tr ng-repeat="clip in words | orderBy:sortType:sortReverse | filter:vaderClips">
+					  	<td><button type="button" class="btn btn-primary btn-lg" ng-click="playSound(this);">{{ clip.title }}</button></td>
+				        <td>{{ clip.contains }}</td>
+				        <td>{{ clip.popularity }}</td>
+				      </tr>
+				    </tbody>
+  				</table>

@@ -1,18 +1,39 @@
 var express = require('express')
     , cors = require('cors')
     , app = express();
-
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
-app.use(bodyParser.json()); // for parsing application/json
+var passport = require('passport');
 var path = require('path');
+var player = require('play-sound')(opts = { timeout: 300 });
+//var test = require('./sockets/base')(io);
+
+
+app.use(bodyParser.json()); // for parsing application/json
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-var player = require('play-sound')(opts = { timeout: 300 });
 
-// respond with "hello world" when a GET request is made to the homepage
+
+app.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    res.redirect('/dashboard/' + req.user.username);
+});
 
 app.get('/', function(req, res){
         res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+
+app.get('/dashboard', function(req, res){
+        res.sendFile(path.join(__dirname + '/public/dashboard.html'));
+});
+
+
+io.on('connection', function(socket){
+  console.log('a user connected');
 });
 
 app.post('/', function(req, res) {
