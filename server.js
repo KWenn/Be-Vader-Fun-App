@@ -1,16 +1,56 @@
-var express = require('express');
-var cors = require('cors');
-var app = express();
-var http = require('http').Server(app);
-var bodyParser = require('body-parser');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var path = require('path');
-var player = require('play-sound')(opts = { timeout: 300 });
-var mongo = require('mongodb');
-//var session = require('express-session');
-var bcrypt = require('bcryptjs');
-var mongoose = require('mongoose');
+/**
+ * Module dependencies.
+ */
+
+const express = require('express');
+const cors = require('cors');
+const http = require('http');
+
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const path = require('path');
+const player = require('play-sound')(opts = { timeout: 300 });
+const mongo = require('mongodb');
+//const session = require('express-session');
+const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json()); // for parsing application/json
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
+
+app.set('views', __dirname + '/public');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+
+
+//const routes = require('/app/routes');
+//app.use('/', routes);
 
 
 //connect to mongodb
@@ -39,17 +79,6 @@ passport.use(new LocalStrategy(function(username, password, done) {
     	});
   	});
 }));
-
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(cors());
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'passwd',
@@ -61,8 +90,9 @@ passport.use(new LocalStrategy({
 ));
 
 
+
 app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname + '/public/index.html'));
+    res.render('index.html');
 });
 
 app.get('/dashboard', function(req, res){
@@ -91,7 +121,30 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-	res.json(req.body);
+	
+	var firstName = req.body.firstName;
+	var lastName = req.body.lastName;
+	var email = req.body.email;
+	var password = req.body.password;
+	var password2 = req.body.password2;
+
+	//validation
+	req.checkBody('firstName', 'First Name is required').notEmpty();
+	req.checkBody('lastName', 'Last Name is required').notEmpty();
+	req.checkBody('email', 'email is required').notEmpty();
+	req.checkBody('password', 'Password required').notEmpty();
+	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);	
+	
+	var errors = req.validationErrors();
+	if(errors){
+		res.render('register.html', {
+			errors:errors
+		})
+		console.log(errors);
+	}else{
+		console.log("Passed");
+	}
+	//res.json(req.body);
 });
 
 /*
