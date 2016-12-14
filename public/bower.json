@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.8",
+    "angular": "^1.6.0",
     "bootstrap": "^3.3.7",
     "font-awesome": "fontawesome#^4.7.0",
     "angular-ui-router": "0.3.1"

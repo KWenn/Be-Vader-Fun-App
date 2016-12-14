@@ -65,16 +65,44 @@ app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 				
 		$http({
 	      method  : 'POST',
-	      url     : 'http://localhost:3000',
+	      url     : '/',
 	      data    : JSON.stringify(sound),
 	      contentType: "application/json",
 	    })
 	    .success(function(data) {
-	        if (data.errors) {
+	        if (data) {
 	          console.log("http send request failed");
 	        } else {
 	          console.log("http send request succeeded");
 	        }
 	    });
 	}
+	
+	$scope.register = function(){
+		var user = {
+			firstName: $scope.firstName,
+			lastName : $scope.lastName,
+			email: $scope.email,
+			password: $scope.password,
+			password2: $scope.password2
+		}
+						
+		$http({
+	      method  : 'POST',
+	      url     : '/register',
+	      data    : JSON.stringify(user),
+	      contentType: "application/json",
+	    })
+	    .success(function(data) {
+	        if (data) {
+	          console.log(data);
+	        } else {
+	          console.log("successfully logged in");
+	        }
+	    });
+
+	    
+	}
+	
+	
 }]);

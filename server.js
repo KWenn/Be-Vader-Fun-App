@@ -121,7 +121,8 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-	
+		console.log(req.body);
+
 	var firstName = req.body.firstName;
 	var lastName = req.body.lastName;
 	var email = req.body.email;
@@ -137,12 +138,10 @@ app.post('/register', function(req, res){
 	
 	var errors = req.validationErrors();
 	if(errors){
-		res.render('register.html', {
-			errors:errors
-		})
-		console.log(errors);
+		res.send(errors[0].msg);
 	}else{
-		console.log("Passed");
+		res.send(false);
+		//session start code
 	}
 	//res.json(req.body);
 });
