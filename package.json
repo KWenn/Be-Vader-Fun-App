@@ -12,6 +12,8 @@
     "angular": "^1.5.8",
     "angular-ui-router": "^0.3.2",
     "audio-player": "^1.1.0",
+    "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
