@@ -79,7 +79,7 @@ app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 	}
 	
 	$scope.register = function(){
-		var user = {
+		var userRegister = {
 			firstName: $scope.firstName,
 			lastName : $scope.lastName,
 			email: $scope.email,
@@ -90,19 +90,37 @@ app.controller('VaderSpeaks', ['$scope',  '$http', function($scope, $http) {
 		$http({
 	      method  : 'POST',
 	      url     : '/register',
-	      data    : JSON.stringify(user),
+	      data    : JSON.stringify(userRegister),
 	      contentType: "application/json",
 	    })
 	    .success(function(data) {
 	        if (data) {
 	          console.log(data);
 	        } else {
-	          console.log("successfully logged in");
+	          console.log("successfully registered");
 	        }
 	    });
-
-	    
 	}
 	
-	
+	$scope.login = function(){
+		var userLogin;
+		var userLogin = {
+			email: this.loginEmail,
+			password: this.loginPassword,
+		}
+		//console.log(userLogin);
+		$http({
+	      method  : 'POST',
+	      url     : '/api/login',
+	      data    : JSON.stringify(userLogin),
+	      contentType: "application/json",
+	    })
+		.then(
+			function successCallback(response){
+				console.log(response);
+				
+			}, function errorCallback(response){
+				console.log(response);
+			}
+		)};
 }]);

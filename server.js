@@ -1,60 +1,33 @@
-/**
- * Module dependencies.
- */
-
-const express = require('express');
-const cors = require('cors');
-const http = require('http');
-
-const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
-const cookieParser = require('cookie-parser');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const path = require('path');
-const player = require('play-sound')(opts = { timeout: 300 });
-const mongo = require('mongodb');
-//const session = require('express-session');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const session = require('client-sessions');
+const express = require("express");
 const app = express();
+const http = require('http');
+const cors = require('cors');
+//const _ = require("lodash");
+const bodyParser = require("body-parser");
+const jwt = require('jsonwebtoken');
+const player = require('play-sound')({ timeout: 300 });
+const mongo = require('mongodb');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const path = require('path');
 
+const passport = require("passport");
+const passportJWT = require("passport-jwt");
 
-/**
- * Middleware functions
- */
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
 
-app.use(cors());
-app.use(bodyParser.json()); // for parsing application/json
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
+var jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
+jwtOptions.secretOrKey = '93T!ll!nf!n!ty';
 
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
+//loads files in models dir
+fs.readdirSync(__dirname + '/models').forEach(function(filename) {
+  if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(cookieParser());
-app.use(session({
-  cookieName: 'session',
-  secret: 'random_string_goes_here',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
-}));
-
 
 //Configurations
 app.set('views', __dirname + '/public');
@@ -62,207 +35,82 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
 
+app.use(passport.initialize());
+app.use(cors());
+app.use(bodyParser.json()); // for parsing application/json
+
 /**
  * Mongoose Connection
  */
-
-mongoose.connect('mongodb://localhost/auth');
-//mongodb schema
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
-var userSchema = new Schema({
-		first_name: String,
-		last_name: String,
-		email: String,
-		username: String,
-		auth: String
-    });
-    
-var Users = mongoose.model('Users', userSchema);
-
-
-//Authentication
-passport.use(new LocalStrategy(function(username, password, done) {
-	process.nextTick(function() {
-    	UserDetails.findOne({
-			'username': username, 
-    	}, function(err, user) {
-			if (err) { return done(err);}
-	  		if (!user) { return done(null, false);}	
-	  		if (user.password != password) { return done(null, false);}
-	  	return done(null, user);
-    	});
-  	});
-}));
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    firstName: 'firstname',
-    lastName: 'lastname',
-    passwordField: 'passwd',
-    session: false
-},
-	function(username, password, done) {
-    // ...
-	}
-));
-
-
-
-//Routes
-
-app.get('/', function(req, res){
-    res.render('index.html');
-});
-
-app.get('/dashboard', function(req, res){
-    res.sendFile(path.join(__dirname + '/public/dashboard.html'));
-});
-
-app.post('/login', passport.authenticate('local', { failureRedirect: '/loginFailure' }),
-	function(req, res) {
-    	res.redirect('/');
-});
-
-app.get('/loginSuccess', function(req, res){
-	res.send("Successfully logged in");
-});
-
-app.get('/loginFailure', function(req, res){
-	res.send("Failure to logged in");
-});
-
-app.get('/logout', function(req, res){
-	res.redirect('/');
-});
-
-app.get('/register', function(req, res){
-	res.sendFile(path.join(__dirname + '/public/register.html'));
-});
-
-app.post('/register', function(req, res){
-	
-	//console.log(req.body);
-
-	var userName = req.body.userName;
-	var firstName = req.body.firstName;
-	var lastName = req.body.lastName;
-	var email = req.body.email;
-	var password = req.body.password;
-	var password2 = req.body.password2;
-
-	//validation
-	req.checkBody('firstName', 'First Name is required').notEmpty();
-	req.checkBody('lastName', 'Last Name is required').notEmpty();
-	req.checkBody('email', 'email is required').notEmpty();
-	req.checkBody('password', 'Password required').notEmpty();
-	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);	
-	
-	var errors = req.validationErrors();
-	if(errors){
-		res.send(errors[0].msg);
-	}else{
-		res.send(false);
-		//session start code
-			//if passwords match and requirements are met, hash password here
-		if(password===password2){
-			bcrypt.hash(password, 10, function(err, hash) {
-				// Store hash in database
-			})
-		}
-	}
-	//res.json(req.body);
-	
-	Users.find({}, function(err,users){
-		if (err) throw err;
-		console.log(users);
-	})	
-});
-
-/*
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
-*/
-
-app.post('/', function(req, res) {
-	var URLS = req.body;
-	var url = URLS["url"];
-	console.log(url);
-	player.play( __dirname + '/public/assets/soundclips/' + url + '.mp3', function(err){if (err) throw err});
-    res.status(200).send((url).toString());
-});
-
-
-
-
+mongoose.connect('mongodb://localhost/vader');
 /**
  * Mongoose connections test
  */
-
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log("mongooose connected");
 });
 
-process.on('exit', function(code) {
-mongoose.disconnect();
+//replace with users.js session.js
+var Users = mongoose.model('users', {firstName: String, lastName: String, email: String, userName: String, password: String});
+
+
+// parse application/x-www-form-urlencoded
+// for easier testing with Postman or plain HTML forms
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+// parse application/json
+app.use(bodyParser.json())
+
+var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+  console.log('payload received', jwt_payload);
+  Users.findOne({ id: jwt_payload.id}, function(err, user){
+    if (user) {
+      next(null, user);
+    } else {
+      next(null, false);
+    }
+  })
+});
+passport.use(strategy);
+
+app.post("/api/login", function(req, res) {
+  if(req.body.email && req.body.password){
+    var email = req.body.email;
+    var password = req.body.password;
+  }
+  // usually this would be a database call:
+  Users.findOne({ email: email}, function(err, user){
+    if( ! user ){
+      res.status(401).json({message:"no such user found"});
+    }
+
+    if(user.password === req.body.password) {
+      console.log("success");
+      // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+      var payload = {id: user.id};
+      var token = jwt.sign(payload, jwtOptions.secretOrKey);
+      res.json({message: "ok", token: token});
+    } else {
+      res.status(401).json({message:"passwords did not match"});
+    }
+  });
+});
+
+app.get('/api/logout', passport.authenticate('jwt', { session: false }), function(req, res){
+	deleteSession();
+	res.redirect('/');
 });
 
 
-/**
- * Model Logic
- */
+app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+  res.json("Success! You can not see this without a token");
+});
 
-function find(collec, query, callback) {
-    mongoose.connection.db.collection(collec, function (err, collection) {
-    collection.find(query).toArray(callback);
-    });
-}
-
-
-
-/**
- * App Logic
- */
-
-function checkpassword(pwtest, pwhash){
-	bcrypt.compare(pwtest, pwhash, function(err, res) {
-		if(res) {
-		// Passwords match - returns true
-		//console.log("Matches=>" + res);
-		//create session variable
-		req.session.user = user;  //loads cookie
-  		} else {
-  		// Passwords don't match -returns false
-  		//console.log("Dont Match=>" + res);
-  		
-  		} 
-	});
-}
-
-
-/**
- * Express Connection
- */
 
 app.listen(3000, function () {
-  console.log('Vader  listening on port 3000!');
+  console.log('Vader is listening on port 3000!');
 });
-
-
-
-/**
- * To Do's
- */
-
-
-//uv4l and webrtc for video
-//stream video and audio to website from webcam/mic on raspberry pi
-//create session - create a cue for users
-//make session end after 3 minutes if somebody in cude
-//display countdown and number of people in cue
-//light up saber when user online
-//make audio clips searchable using angular
-//list audio clips by popularity
-
